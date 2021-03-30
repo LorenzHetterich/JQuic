@@ -121,7 +121,7 @@ Arguments:
 It takes as additional argument an input Json file (`-f <file>`). <br>
 The file must contain a single Json object with two arrays containing all rules:
 
-```Json
+```
 {
  "requests": [...],
  "responses": [...]
