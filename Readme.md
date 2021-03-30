@@ -132,7 +132,7 @@ The matching rule with the highest priority will be applied.
 #### Json http request
 A single request rule looks like this:
 
-```Json
+```
 {
    "name": "example rule", # required
    "priority": 1,          # defaults to 0
@@ -151,7 +151,7 @@ A single request rule looks like this:
 #### Json http response
 A single response rule looks like this:
 
-```Json
+```
 {
    "name": "example rule", # required
    "priority": 1,          # defaults to 0
@@ -169,7 +169,7 @@ A single response rule looks like this:
 A replacement has a type (`path`, `content`, `method`, `header`, `parameter` or `status_code`). The other fields depend on the type: <br>
 
 ##### Json http path, content, method and status_code replacement
-```Json
+```
 {
    "type": "path",       # required; "path", "content", "method" or "status_code"
    "match": "test",      # regex the path must match for rule to be applied. Defaults to ".+"
@@ -180,7 +180,7 @@ A replacement has a type (`path`, `content`, `method`, `header`, `parameter` or 
 ##### Json http header and parameter replacement
 Since headers and parameters have both a name and a value, the replacement rules have more possible fields:
 
-```Json
+```
 {
    "type": "header",     # required; "header" or "parameter"
    "match_name": "test", # regex the name must match for rule to be applied. Defaults to ".+"
