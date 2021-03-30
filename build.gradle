@@ -1,0 +1,163 @@
+// required for 'run' task
+apply plugin: 'application'
+
+apply plugin: 'java'
+sourceCompatibility = 14
+targetCompatibility = 14
+
+// required to make eclipse work properly
+apply plugin: 'eclipse'
+ 
+repositories {
+    mavenCentral();
+}
+ 
+configurations {
+    // configuration that holds jars to include in the jar
+    extraLibs
+}
+ 
+dependencies {
+    // makes working with native code way easier
+    extraLibs group: 'net.java.dev.jna', name: 'jna', version: '5.6.0'
+    // used for json rule proxy
+    extraLibs group: 'com.google.code.gson', name: 'gson', version: '2.8.6'
+    // used to parse command line arguments
+    extraLibs group: 'com.beust', name: 'jcommander', version: '1.81'
+    configurations.compile.extendsFrom(configurations.extraLibs)
+}
+
+ 
+// java source is in 'src/main/java' directory
+sourceSets.main.java.srcDirs = ['src/main/java']
+
+// resources is in 'src/main/resources' directory
+sourceSets.main.resources.srcDirs = ['src/main/resources']
+
+// main class is 'Main' in package 'jquic'
+mainClassName = "jquic.main.GradleMain"
+
+// current directory
+def curDir = file(".")
+
+// set 'LD_PRELOAD' environment variable to make sure we load the correct libraries
+task gradleRun(type: Exec) {
+   def libraries = "" // "/usr/lib/x86_64-linux-gnu/libasan.so.5"
+   def libDir = "" + curDir + "/native/libs/"
+  
+   libraries += " " + libDir + "libssl.so"
+   libraries += " " + libDir + "libcrypto.so"
+   libraries += " " + libDir + "libdecrepit.so"
+   libraries += " " + libDir + "liblsquic.so"
+
+	executable "sh"
+    args "-c", "LD_PRELOAD='" + libraries + "' java -cp run/jquic.jar " + mainClassName
+}
+
+// setup group for gradleRun task
+configure(gradleRun){
+    group "application"
+    description "test run thingy"
+}
+
+// run 'native/shared.sh' (from directory 'native')
+// depends on 'buildHeaders'
+task buildLibrary(type: Exec){
+    executable "sh"
+    args "-c", "cd native;sh shared.sh"
+}
+
+gradleRun.dependsOn buildLibrary
+gradleRun.dependsOn jar
+
+// put the buildLibrary task into the 'application' group and add description
+configure(buildLibrary) {   
+    group = 'application'
+    description = 'Builds native library'
+}
+
+// run 'IPTables/term.sh'
+task runProxy(type: Exec){
+    executable "sh"
+    args "-c", "cd IPTables; sh term.sh"
+}
+
+// make sure to recompile the binary before running
+runProxy.dependsOn buildLibrary
+
+// put the runProxy task into the 'application' group and add description
+configure(runProxy) {   
+    group = 'application'
+    description = 'runs a terminal as the proxy user'
+}
+
+// run release/release.sh
+task release(type: Exec){
+	executable "sh"
+	args "-c", "cd release; sh release.sh"
+}
+
+// make sure to build everything before releasing
+release.dependsOn jar
+jar.dependsOn buildLibrary
+
+// put release task into the 'release' group and add description
+configure(release) {
+	group 'application'
+	description 'builds everything and compiles runner binary'
+}
+
+// run tests
+task runTests(type: Exec){
+	executable "sh"
+	args "-c", "cd run; ./${binaryName} tests"
+}
+
+
+// we need to build the jar etc. before running tests
+runTests.dependsOn release
+
+// put runTests task into the 'application' group and add description
+configure(runTests){
+	group 'application'
+	description 'runs tests'
+}
+
+// make sure stdin works
+runProxy.doFirst {
+	standardInput = System.in
+}
+
+// make sure output ends in release/
+tasks.withType(Jar) {
+	destinationDirectory = file("run")
+	archiveBaseName = 'jquic'
+}
+
+// compile markdown manpage
+task manPage(type: Exec) {
+   executable "sh"
+   args "-c", "rm run/manpage;pandoc src/main/java/manpage.md -s -t man -o run/manpage"
+}
+
+// set group for manpage task
+configure(manPage) {
+    group 'application'
+    description 'compile manpage'
+}
+
+// set main class for jar to proxy main
+jar {
+  manifest {
+    attributes(
+      'Class-Path': configurations.compileClasspath.collect { it.getName() }.join(' '),
+      'Main-Class': "jquic.main.ProxyMain"
+    )
+  }
+  from {
+    configurations.extraLibs.collect { it.isDirectory() ? it : zipTree(it) }
+  }
+}
+
+
+ 

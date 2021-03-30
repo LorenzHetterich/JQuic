@@ -1,0 +1,57 @@
+{ 
+  "requests" : [ 
+    { 
+      "name": "forward request"
+    },
+    { 
+      "name": "no tea",
+      "path": "/tea",
+      "priority": 1,
+      "replace": [ 
+        { 
+          "type": "path",
+          "match": "/tea",
+          "replace": "/coffee"
+        }
+      ]
+    },
+    { 
+      "name": "change repeat",
+      "path": "/repeat",
+      "priority": 1,
+      "method": "POST",
+      "parameters": { 
+        "count": "[0-9]+"
+      },
+      "replace": [
+        { 
+          "type": "parameter",
+          "match_name": "count",
+          "replace_val": "${val:0}${val:0}"
+        }
+      ]
+    },
+    { 
+      "name": "change password",
+      "path": "/admin",
+      "priority": 1,
+      "method": "GET",
+      "headers": { 
+        "x-password": ".*"
+      },
+      "replace": [ 
+        { 
+          "type": "header",
+          "match_name": "x-password",
+          "replace_val": "Wrong Password!"
+        }
+      ]
+    }
+  ],
+  
+  "responses" : [ 
+    { 
+      "name": "forward response"
+    }
+  ]
+}

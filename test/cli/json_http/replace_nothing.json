@@ -1,0 +1,9 @@
+{
+  "requests": [
+  	{"name": "let through"}
+  ],
+  
+  "responses": [
+  	{"name": "do nothing"}
+  ]
+}

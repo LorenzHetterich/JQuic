@@ -1,0 +1,38 @@
+{
+  "requests": [
+  	{"name": "let through"}
+  ],
+  
+  "responses": [
+  	{"name": "do nothing"},
+  	{ 
+  	  "name": "no 5XX",
+  	  "priority": 1,
+  	  "status_code": "5..",
+  	  "replace": [ 
+  	    { 
+  	      "type": "status_code",
+  	      "replace": "404"
+  	    }
+  	  ]
+  	},
+  	{ 
+  	  "name": "no foo no bar",
+  	  "priority": 1,
+  	  "status_code": "200",
+  	  "content": ".*",
+  	  "replace": [ 
+  	    { 
+  	      "type": "content",
+  	      "match": "foo",
+  	      "replace": "nope"
+  	    },
+  	    { 
+  	      "type": "content",
+  	      "match": "bar",
+  	      "replace": "nope"
+  	    }
+  	  ]
+  	}
+  ]
+}
