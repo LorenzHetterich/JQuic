@@ -19,7 +19,7 @@ Cross Platform: Although JQuic is mostly developed in Java and `lsquic` supports
 * requires Java 14
 
 ```bash
-git clone (insert link here)
+git clone https://github.com/LorenzHetterich/JQuic.git
 cd JQuic
 ./gradlew release
 cd run
