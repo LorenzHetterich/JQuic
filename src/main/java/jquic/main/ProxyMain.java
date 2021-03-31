@@ -12,6 +12,7 @@ import java.util.Map;
 
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
+import com.beust.jcommander.ParameterException;
 
 import jquic.main.providers.JavaProxyProvider;
 import jquic.main.providers.JsonHttpProxyProvider;
@@ -49,8 +50,17 @@ public class ProxyMain {
 		Args cmdl = new Args();
 
 		// Parse arguments
-		JCommander.newBuilder().acceptUnknownOptions(true).addObject(cmdl).build().parse(args);
-
+		JCommander commander = JCommander.newBuilder().programName("jquic").acceptUnknownOptions(true).addObject(cmdl).build();
+		try {
+			commander.parse(args);
+		} catch(ParameterException ex) {
+			StringBuilder b = new StringBuilder();
+			commander.getUsageFormatter().usage(b);
+			System.err.println(b);
+			ex.printStackTrace();
+			System.exit(-1);
+		}
+		
 		// Get proxy provider based on given type
 		ProxyProvider provider = providers.get(cmdl.type);
 

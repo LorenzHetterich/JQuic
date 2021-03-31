@@ -14,6 +14,7 @@ import java.util.List;
 
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
+import com.beust.jcommander.ParameterException;
 
 
 public class JavaProxyProvider extends ProxyProvider {
@@ -30,7 +31,16 @@ public class JavaProxyProvider extends ProxyProvider {
 		// from command line
 		Args cmdl = new Args();
 		
-		JCommander.newBuilder().acceptUnknownOptions(true).addObject(cmdl).build().parse(args);
+		JCommander commander = JCommander.newBuilder().programName("jquic -t " + name).acceptUnknownOptions(true).addObject(cmdl).build();
+		try {
+			commander.parse(args);
+		} catch(ParameterException ex) {
+			StringBuilder b = new StringBuilder();
+			commander.getUsageFormatter().usage(b);
+			System.err.println(b);
+			ex.printStackTrace();
+			System.exit(-1);
+		}
 
 		// Put into file
 		File f = new File(cmdl.file);

@@ -5,6 +5,7 @@ import java.nio.file.Files;
 
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
+import com.beust.jcommander.ParameterException;
 import com.google.gson.Gson;
 
 import jquic.main.providers.json.Replacement;
@@ -30,8 +31,17 @@ public class JsonHttpProxyProvider extends ProxyProvider {
 		Args cmdl = new Args();
 
 		// Process arguments
-		JCommander.newBuilder().acceptUnknownOptions(true).addObject(cmdl).build().parse(args);
-
+		JCommander commander = JCommander.newBuilder().programName("jquic -t " + name).acceptUnknownOptions(true).addObject(cmdl).build();
+		try {
+			commander.parse(args);
+		} catch(ParameterException ex) {
+			StringBuilder b = new StringBuilder();
+			commander.getUsageFormatter().usage(b);
+			System.err.println(b);
+			ex.printStackTrace();
+			System.exit(-1);
+		}
+		
 		// File for args
 		File f = new File(cmdl.file);
 
