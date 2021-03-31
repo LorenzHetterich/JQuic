@@ -66,7 +66,7 @@ public class QuicOutputStream extends OutputStream {
 	}
 
 	/**
-	 * Flush specified by {@link jquic.base.engine.QuicConnection connection}
+	 * Flush specified by {@link jquic.base.engine.QuicEngine engine}
 	 */
 	@Override
 	public void flush() {

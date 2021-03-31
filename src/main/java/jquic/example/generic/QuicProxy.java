@@ -17,7 +17,7 @@ import logging.Logger;
 
 /**
  * Generic quic proxy. <br>
- * For every client -> proxy connection or stream, a proxy -> server connection (or stream) is opened and associated with it. <br>
+ * For every client - proxy connection or stream, a proxy - server connection (or stream) is opened and associated with it. <br>
  * Once either of them dies, their associated connection / stream is closed. <br>
  * To modify data flowing through the proxy, overwrite {@link #onData(ClientStream, ServerStream, byte[], int)} and {@link #onData(ServerStream, ClientStream, byte[], int)}
  */

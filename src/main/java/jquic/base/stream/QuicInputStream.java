@@ -22,7 +22,6 @@ public class QuicInputStream extends InputStream {
 	
 	/**
 	 * Constructor
-	 * @param stream {@link #stream}
 	 * @param qstream {@link #qstream}
 	 */
 	public QuicInputStream(QuicStream qstream) {

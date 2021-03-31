@@ -85,7 +85,7 @@ public class ProxyMain {
 	}
 
 	/**
-	 * commandline arguments of {@link #ProxyMain()} (before choosing provider)
+	 * commandline arguments of {@link ProxyMain#ProxyMain()} (before choosing provider)
 	 */
 	public static class Args {
 		

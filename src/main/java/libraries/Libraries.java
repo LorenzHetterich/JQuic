@@ -40,7 +40,7 @@ public class Libraries {
 	public static final Library crypto = loadLibrary("crypto", Library.class);
 
 	/**
-	 * ssl library, required by {@value #lsquic} and {@link #decrepit}
+	 * ssl library, required by {@link #lsquic} and {@link #decrepit}
 	 */
 	public static final BoringSsl ssl = loadLibrary("ssl", BoringSsl.class);
 	

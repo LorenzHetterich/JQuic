@@ -12,7 +12,7 @@ public class HttpUtils {
 	/**
 	 * Reponse case
 	 * @param status code
-	 * @param data provided in msg
+	 * @param d provided in msg
 	 * @param headers of msg
 	 * @return HTTP msg
 	 */

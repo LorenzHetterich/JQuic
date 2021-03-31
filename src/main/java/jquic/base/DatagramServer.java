@@ -21,7 +21,6 @@ public class DatagramServer implements AutoCloseable{
 	/**
 	 * Constructor <br>
 	 * Opens a DatagramSocket
-	 * @param destPort to listen on
 	 */
 	public DatagramServer() {
 		try {

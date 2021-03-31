@@ -18,8 +18,8 @@ public class SimpleAnnotatedProxyExample {
 
 	/**
 	 * start proxy on port 4000 using certificate and key from directory testcert. <br>
-	 * uses {@link RequestModifier} to modify proxy --> client requests before sending them to the server and <br>
-	 * {@link ResponseModifier} to modify server --> proxy requests before sending them to the client.
+	 * uses {@link RequestModifier} to modify proxy -- client requests before sending them to the server and <br>
+	 * {@link ResponseModifier} to modify server -- proxy requests before sending them to the client.
 	 */
 	public static void start() {
 		proxy.requestModifier.addObject(new RequestModifier());
@@ -34,8 +34,8 @@ public class SimpleAnnotatedProxyExample {
 		
 		/**
 		 * Default: let through
-		 * @param request client --> proxy request
-		 * @return proxy --> server request
+		 * @param request client -- proxy request
+		 * @return proxy -- server request
 		 */
 		@Request
 		public static SimpleHttpMessage letThrough(SimpleHttpMessage request) {
@@ -44,8 +44,8 @@ public class SimpleAnnotatedProxyExample {
 
 		/**
 		 * Replace /admin in path with /nope
-		 * @param request client --> proxy request
-		 * @return proxy --> server request
+		 * @param request client -- proxy request
+		 * @return proxy -- server request
 		 */
 		@Request(method = "GET", path = "/admin", priority = 1)
 		public static SimpleHttpMessage modifyAdmin(SimpleHttpMessage request) {
@@ -63,8 +63,8 @@ public class SimpleAnnotatedProxyExample {
 		
 		/**
 		 * Default: let through
-		 * @param response server --> proxy response
-		 * @return proxy --> client response
+		 * @param response server - proxy response
+		 * @return proxy -- client response
 		 */
 		@Response
 		public static SimpleHttpMessage letThrough(SimpleHttpMessage response) {
@@ -73,8 +73,8 @@ public class SimpleAnnotatedProxyExample {
 
 		/**
 		 * Change status code 404 to 418
-		 * @param response server --> proxy response
-		 * @return proxy --> client response
+		 * @param response server -- proxy response
+		 * @return proxy -- client response
 		 */
 		@Response(status_code="404", priority = 1)
 		public static SimpleHttpMessage modifyAdmin(SimpleHttpMessage response) {

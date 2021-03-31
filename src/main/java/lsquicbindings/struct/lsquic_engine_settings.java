@@ -16,8 +16,6 @@ public class lsquic_engine_settings extends Structure {
 	 * down. Server supports either of the versions specified here.
 	 *
 	 * This setting applies to both Google and IETF QUIC.
-	 *
-	 * @see lsquic_version
 	 */
 	public int es_versions;
 
@@ -27,7 +25,7 @@ public class lsquic_engine_settings extends Structure {
 	 * In server mode, per-connection values may be set lower than this if resources
 	 * are scarce.
 	 *
-	 * Do not set es_cfcw and es_sfcw lower than @ref LSQUIC_MIN_FCW.
+	 * Do not set es_cfcw and es_sfcw lower than LSQUIC_MIN_FCW.
 	 *
 	 * @see es_max_cfcw
 	 */
@@ -39,7 +37,7 @@ public class lsquic_engine_settings extends Structure {
 	 * In server mode, per-connection values may be set lower than this if resources
 	 * are scarce.
 	 *
-	 * Do not set es_cfcw and es_sfcw lower than @ref LSQUIC_MIN_FCW.
+	 * Do not set es_cfcw and es_sfcw lower than LSQUIC_MIN_FCW.
 	 *
 	 * @see es_max_sfcw
 	 */
@@ -52,7 +50,8 @@ public class lsquic_engine_settings extends Structure {
 	 *
 	 * This setting is applicable to both gQUIC and IETF QUIC.
 	 *
-	 * @see es_cfcw, @see es_init_max_data.
+	 * @see es_cfcw
+	 * @see es_init_max_data
 	 */
 	public int es_max_cfcw;
 
@@ -63,8 +62,9 @@ public class lsquic_engine_settings extends Structure {
 	 *
 	 * This setting is applicable to both gQUIC and IETF QUIC.
 	 *
-	 * @see es_sfcw, @see es_init_max_stream_data_bidi_remote,
-	 * @see es_init_max_stream_data_bidi_local.
+	 * @see es_sfcw
+	 * @see es_init_max_stream_data_bidi_remote
+	 * @see es_init_max_stream_data_bidi_local
 	 */
 	public int es_max_sfcw;
 
@@ -94,11 +94,11 @@ public class lsquic_engine_settings extends Structure {
 
 	/**
 	 * This corresponds to SETTINGS_MAX_HEADER_LIST_SIZE (RFC 7540, Section 6.5.2).
-	 * 0 means no limit. Defaults to @ref LSQUIC_DF_MAX_HEADER_LIST_SIZE.
+	 * 0 means no limit. Defaults to LSQUIC_DF_MAX_HEADER_LIST_SIZE.
 	 */
 	public int es_max_header_list_size;
 
-	/** UAID -- User-Agent ID. Defaults to @ref LSQUIC_DF_UA. */
+	/** UAID -- User-Agent ID. Defaults to LSQUIC_DF_UA. */
 	public Pointer es_ua;
 
 	/**
@@ -140,7 +140,7 @@ public class lsquic_engine_settings extends Structure {
 	 *
 	 * This setting is applicable to gQUIC only.
 	 *
-	 * The default is @ref LSQUIC_DF_SUPPORT_TCID0.
+	 * The default is LSQUIC_DF_SUPPORT_TCID0.
 	 */
 	public int es_support_tcid0;
 
@@ -162,20 +162,20 @@ public class lsquic_engine_settings extends Structure {
 	 * If set to true value, the library will drop connections when it receives
 	 * corresponding Public Reset packet. The default is to ignore these packets.
 	 *
-	 * The default is @ref LSQUIC_DF_HONOR_PRST.
+	 * The default is LSQUIC_DF_HONOR_PRST.
 	 */
 	public int es_honor_prst;
 
 	/**
 	 * If set to true value, the library will send Public Reset packets in response
-	 * to incoming packets with unknown Connection IDs. The default is @ref
+	 * to incoming packets with unknown Connection IDs. The default is
 	 * LSQUIC_DF_SEND_PRST.
 	 */
 	public int es_send_prst;
 
 	/**
 	 * A non-zero value enables public internal checks that identify suspected
-	 * infinite loops in user @ref on_read and @ref on_write callbacks and break
+	 * infinite loops in user on_read and on_write callbacks and break
 	 * them. An infinite loop may occur if user code keeps on performing the same
 	 * operation without checking status, e.g. reading from a closed stream etc.
 	 *
@@ -183,7 +183,7 @@ public class lsquic_engine_settings extends Structure {
 	 * number of times in a row without making progress (that is, reading, writing,
 	 * or changing stream state), loop break will occur.
 	 *
-	 * The defaut value is @ref LSQUIC_DF_PROGRESS_CHECK.
+	 * The defaut value is LSQUIC_DF_PROGRESS_CHECK.
 	 */
 	public int es_progress_check;
 
@@ -194,51 +194,51 @@ public class lsquic_engine_settings extends Structure {
 	 * readable or writeable, respectively, or until the user signals unwillingness
 	 * to read or write using
 	 * 
-	 * @ref lsquic_stream_wantread() or @ref lsquic_stream_wantwrite() or shuts down
+	 * lsquic_stream_wantread() or lsquic_stream_wantwrite() or shuts down
 	 *      the stream.
 	 *
 	 *      This also applies to the on_dg_write() callback.
 	 *
-	 *      The default value is @ref LSQUIC_DF_RW_ONCE.
+	 *      The default value is LSQUIC_DF_RW_ONCE.
 	 */
 	public int es_rw_once;
 
 	/**
 	 * If set, this value specifies the number of microseconds that
 	 * 
-	 * @ref lsquic_engine_process_conns() and
-	 * @ref lsquic_engine_send_unsent_packets() are allowed to spend before
+	 * lsquic_engine_process_conns() and
+	 * lsquic_engine_send_unsent_packets() are allowed to spend before
 	 *      returning.
 	 *
 	 *      This is not an exact science and the connections must make progress, so
 	 *      the deadline is checked after all connections get a chance to tick (in
-	 *      the case of @ref lsquic_engine_process_conns()) and at least one batch
+	 *      the case of lsquic_engine_process_conns()) and at least one batch
 	 *      of packets is sent out.
 	 *
 	 *      When processing function runs out of its time slice, immediate calls
-	 *      to @ref lsquic_engine_has_unsent_packets() return false.
+	 *      to lsquic_engine_has_unsent_packets() return false.
 	 *
-	 *      The default value is @ref LSQUIC_DF_PROC_TIME_THRESH.
+	 *      The default value is LSQUIC_DF_PROC_TIME_THRESH.
 	 */
 	public int es_proc_time_thresh;
 
 	/**
 	 * If set to true, packet pacing is implemented per connection.
 	 *
-	 * The default value is @ref LSQUIC_DF_PACE_PACKETS.
+	 * The default value is LSQUIC_DF_PACE_PACKETS.
 	 */
 	public int es_pace_packets;
 
 	/**
 	 * Clock granularity information is used by the pacer. The value is in
-	 * microseconds; default is @ref LSQUIC_DF_CLOCK_GRANULARITY.
+	 * microseconds; default is LSQUIC_DF_CLOCK_GRANULARITY.
 	 */
 	public int es_clock_granularity;
 
 	/**
 	 * Congestion control algorithm to use.
 	 *
-	 * 0: Use default (@ref LSQUIC_DF_CC_ALGO) 1: Cubic 2: BBRv1 3: Adaptive (Cubic
+	 * 0: Use default (LSQUIC_DF_CC_ALGO) 1: Cubic 2: BBRv1 3: Adaptive (Cubic
 	 * or BBRv1)
 	 */
 	public int es_cc_algo;
@@ -251,7 +251,7 @@ public class lsquic_engine_settings extends Structure {
 	 * smaller than or equal to es_cc_rtt_thresh, congestion controller is switched
 	 * to Cubic; otherwise, BBRv1 is picked.
 	 *
-	 * The default value is @ref LSQUIC_DF_CC_RTT_THRESH.
+	 * The default value is LSQUIC_DF_CC_RTT_THRESH.
 	 */
 	public int es_cc_rtt_thresh;
 
@@ -264,8 +264,8 @@ public class lsquic_engine_settings extends Structure {
 	 *
 	 * If this value is zero, this timeout is disabled.
 	 *
-	 * Default value is @ref LSQUIC_DF_NOPROGRESS_TIMEOUT_SERVER in server mode
-	 * and @ref LSQUIC_DF_NOPROGRESS_TIMEOUT_CLIENT in client mode.
+	 * Default value is LSQUIC_DF_NOPROGRESS_TIMEOUT_SERVER in server mode
+	 * and LSQUIC_DF_NOPROGRESS_TIMEOUT_CLIENT in client mode.
 	 */
 	public int es_noprogress_timeout;
 
@@ -279,8 +279,8 @@ public class lsquic_engine_settings extends Structure {
 	 *
 	 * Depending on the engine mode, the default value is either
 	 * 
-	 * @ref LSQUIC_DF_INIT_MAX_DATA_CLIENT or
-	 * @ref LSQUIC_DF_INIT_MAX_DATA_SERVER.
+	 * LSQUIC_DF_INIT_MAX_DATA_CLIENT or
+	 * LSQUIC_DF_INIT_MAX_DATA_SERVER.
 	 */
 	public int es_init_max_data;
 
@@ -292,8 +292,8 @@ public class lsquic_engine_settings extends Structure {
 	 *
 	 * Depending on the engine mode, the default value is either
 	 * 
-	 * @ref LSQUIC_DF_INIT_MAX_STREAM_DATA_BIDI_REMOTE_CLIENT or
-	 * @ref LSQUIC_DF_INIT_MAX_STREAM_DATA_BIDI_REMOTE_SERVER.
+	 * LSQUIC_DF_INIT_MAX_STREAM_DATA_BIDI_REMOTE_CLIENT or
+	 * LSQUIC_DF_INIT_MAX_STREAM_DATA_BIDI_REMOTE_SERVER.
 	 */
 	public int es_init_max_stream_data_bidi_remote;
 
@@ -305,8 +305,8 @@ public class lsquic_engine_settings extends Structure {
 	 *
 	 * Depending on the engine mode, the default value is either
 	 * 
-	 * @ref LSQUIC_DF_INIT_MAX_STREAM_DATA_BIDI_LOCAL_CLIENT or
-	 * @ref LSQUIC_DF_INIT_MAX_STREAM_DATA_BIDI_LOCAL_SERVER.
+	 * LSQUIC_DF_INIT_MAX_STREAM_DATA_BIDI_LOCAL_CLIENT or
+	 * LSQUIC_DF_INIT_MAX_STREAM_DATA_BIDI_LOCAL_SERVER.
 	 */
 	public int es_init_max_stream_data_bidi_local;
 
@@ -318,8 +318,8 @@ public class lsquic_engine_settings extends Structure {
 	 *
 	 * Depending on the engine mode, the default value is either
 	 * 
-	 * @ref LSQUIC_DF_INIT_MAX_STREAM_DATA_UNI_CLIENT or
-	 * @ref LSQUIC_DF_INIT_MAX_STREAM_DATA_UNI_SERVER.
+	 * LSQUIC_DF_INIT_MAX_STREAM_DATA_UNI_CLIENT or
+	 * LSQUIC_DF_INIT_MAX_STREAM_DATA_UNI_SERVER.
 	 */
 	public int es_init_max_stream_data_uni;
 
@@ -328,7 +328,7 @@ public class lsquic_engine_settings extends Structure {
 	 *
 	 * This is a transport parameter.
 	 *
-	 * Default value is @ref LSQUIC_DF_INIT_MAX_STREAMS_BIDI.
+	 * Default value is LSQUIC_DF_INIT_MAX_STREAMS_BIDI.
 	 */
 	public int es_init_max_streams_bidi;
 
@@ -337,9 +337,9 @@ public class lsquic_engine_settings extends Structure {
 	 *
 	 * This is a transport parameter.
 	 *
-	 * Default value is @ref LSQUIC_DF_INIT_MAX_STREAMS_UNI_CLIENT or
+	 * Default value is LSQUIC_DF_INIT_MAX_STREAMS_UNI_CLIENT or
 	 * 
-	 * @ref LSQUIC_DF_INIT_MAX_STREAM_DATA_UNI_SERVER.
+	 * LSQUIC_DF_INIT_MAX_STREAM_DATA_UNI_SERVER.
 	 */
 	public int es_init_max_streams_uni;
 
@@ -353,7 +353,7 @@ public class lsquic_engine_settings extends Structure {
 	 * after the switchover to IETF QUIC, we do not have to keep on using strange
 	 * units.)
 	 *
-	 * Default value is @ref LSQUIC_DF_IDLE_TIMEOUT.
+	 * Default value is LSQUIC_DF_IDLE_TIMEOUT.
 	 *
 	 * Maximum value is 600 seconds.
 	 */
@@ -364,7 +364,7 @@ public class lsquic_engine_settings extends Structure {
 	 * PING frames in the absence of other activity.
 	 *
 	 * By default, the server does not send PINGs and the period is set to zero. The
-	 * client's defaut value is @ref LSQUIC_DF_PING_PERIOD.
+	 * client's defaut value is LSQUIC_DF_PING_PERIOD.
 	 */
 	public int es_ping_period;
 
@@ -372,7 +372,7 @@ public class lsquic_engine_settings extends Structure {
 	 * Source Connection ID length. Only applicable to the IETF QUIC versions. Valid
 	 * values are 0 through 20, inclusive.
 	 *
-	 * Default value is @ref LSQUIC_DF_SCID_LEN.
+	 * Default value is LSQUIC_DF_SCID_LEN.
 	 */
 	public int es_scid_len;
 
@@ -381,14 +381,14 @@ public class lsquic_engine_settings extends Structure {
 	 * versions. This field is measured in CIDs per minute. Using value 0 indicates
 	 * that there is no rate limit for CID issuance.
 	 *
-	 * Default value is @ref LSQUIC_DF_SCID_ISS_RATE.
+	 * Default value is LSQUIC_DF_SCID_ISS_RATE.
 	 */
 	public int es_scid_iss_rate;
 
 	/**
 	 * Maximum size of the QPACK dynamic table that the QPACK decoder will use.
 	 *
-	 * The default is @ref LSQUIC_DF_QPACK_DEC_MAX_SIZE.
+	 * The default is LSQUIC_DF_QPACK_DEC_MAX_SIZE.
 	 */
 	public int es_qpack_dec_max_size;
 
@@ -396,7 +396,7 @@ public class lsquic_engine_settings extends Structure {
 	 * Maximum number of blocked streams that the QPACK decoder is willing to
 	 * tolerate.
 	 *
-	 * The default is @ref LSQUIC_DF_QPACK_DEC_MAX_BLOCKED.
+	 * The default is LSQUIC_DF_QPACK_DEC_MAX_BLOCKED.
 	 */
 	public int es_qpack_dec_max_blocked;
 
@@ -405,7 +405,7 @@ public class lsquic_engine_settings extends Structure {
 	 * actual size of the dynamic table will not exceed the minimum of this value
 	 * and the value advertized by peer.
 	 *
-	 * The default is @ref LSQUIC_DF_QPACK_ENC_MAX_SIZE.
+	 * The default is LSQUIC_DF_QPACK_ENC_MAX_SIZE.
 	 */
 	public int es_qpack_enc_max_size;
 
@@ -414,21 +414,21 @@ public class lsquic_engine_settings extends Structure {
 	 * The actual number of blocked streams will not exceed the minimum of this
 	 * value and the value advertized by peer.
 	 *
-	 * The default is @ref LSQUIC_DF_QPACK_ENC_MAX_BLOCKED.
+	 * The default is LSQUIC_DF_QPACK_ENC_MAX_BLOCKED.
 	 */
 	public int es_qpack_enc_max_blocked;
 
 	/**
 	 * Enable ECN support.
 	 *
-	 * The default is @ref LSQUIC_DF_ECN
+	 * The default is LSQUIC_DF_ECN
 	 */
 	public int es_ecn;
 
 	/**
 	 * Allow peer to migrate connection.
 	 *
-	 * The default is @ref LSQUIC_DF_ALLOW_MIGRATION
+	 * The default is LSQUIC_DF_ALLOW_MIGRATION
 	 */
 	public int es_allow_migration;
 
@@ -436,28 +436,28 @@ public class lsquic_engine_settings extends Structure {
 	 * Use QL loss bits. Allowed values are: 0: Do not use loss bits 1: Allow loss
 	 * bits 2: Allow and send loss bits
 	 *
-	 * Default value is @ref LSQUIC_DF_QL_BITS
+	 * Default value is LSQUIC_DF_QL_BITS
 	 */
 	public int es_ql_bits;
 
 	/**
 	 * Enable spin bit. Allowed values are 0 and 1.
 	 *
-	 * Default value is @ref LSQUIC_DF_SPIN
+	 * Default value is LSQUIC_DF_SPIN
 	 */
 	public int es_spin;
 
 	/**
 	 * Enable delayed ACKs extension. Allowed values are 0 and 1.
 	 *
-	 * Default value is @ref LSQUIC_DF_DELAYED_ACKS
+	 * Default value is LSQUIC_DF_DELAYED_ACKS
 	 */
 	public int es_delayed_acks;
 
 	/**
 	 * Enable timestamps extension. Allowed values are 0 and 1.
 	 *
-	 * Default value is @ref LSQUIC_DF_TIMESTAMPS
+	 * Default value is LSQUIC_DF_TIMESTAMPS
 	 */
 	public int es_timestamps;
 
@@ -468,7 +468,7 @@ public class lsquic_engine_settings extends Structure {
 	 *
 	 * If set to zero, limit is not set.
 	 *
-	 * Default value is @ref LSQUIC_DF_MAX_UDP_PAYLOAD_SIZE_RX
+	 * Default value is LSQUIC_DF_MAX_UDP_PAYLOAD_SIZE_RX
 	 */
 	public short es_max_udp_payload_size_rx;
 
@@ -477,7 +477,7 @@ public class lsquic_engine_settings extends Structure {
 	 * grease the QUIC bit on the outgoing QUIC packets if the peer sent the
 	 * "grease_quic_bit" transport parameter.
 	 *
-	 * Default value is @ref LSQUIC_DF_GREASE_QUIC_BIT
+	 * Default value is LSQUIC_DF_GREASE_QUIC_BIT
 	 */
 	public int es_grease_quic_bit;
 
@@ -485,7 +485,7 @@ public class lsquic_engine_settings extends Structure {
 	 * If set to true value, enable DPLPMTUD -- Datagram Packetization Layer Path
 	 * MTU Discovery.
 	 *
-	 * Default value is @ref LSQUIC_DF_DPLPMTUD
+	 * Default value is LSQUIC_DF_DPLPMTUD
 	 */
 	public int es_dplpmtud;
 
@@ -494,7 +494,7 @@ public class lsquic_engine_settings extends Structure {
 	 *
 	 * If set to zero, this value is calculated based on QUIC and IP versions.
 	 *
-	 * Default value is @ref LSQUIC_DF_BASE_PLPMTU.
+	 * Default value is LSQUIC_DF_BASE_PLPMTU.
 	 */
 	public short es_base_plpmtu;
 
@@ -503,7 +503,7 @@ public class lsquic_engine_settings extends Structure {
 	 *
 	 * If set to zero, picking this value is left to the engine.
 	 *
-	 * Default value is @ref LSQUIC_DF_MAX_PLPMTU.
+	 * Default value is LSQUIC_DF_MAX_PLPMTU.
 	 */
 	public short es_max_plpmtu;
 
@@ -519,14 +519,14 @@ public class lsquic_engine_settings extends Structure {
 	 *
 	 * If set to zero, the default is used.
 	 *
-	 * Default value is @ref LSQUIC_DF_MTU_PROBE_TIMER.
+	 * Default value is LSQUIC_DF_MTU_PROBE_TIMER.
 	 */
 	public int es_mtu_probe_timer;
 
 	/**
 	 * Enable datagram extension. Allowed values are 0 and 1.
 	 *
-	 * Default value is @ref LSQUIC_DF_DATAGRAMS
+	 * Default value is LSQUIC_DF_DATAGRAMS
 	 */
 	public int es_datagrams;
 
@@ -535,7 +535,7 @@ public class lsquic_engine_settings extends Structure {
 	 * rebinding and path characteristics -- MTU, RTT, and CC state -- are not
 	 * reset.
 	 *
-	 * Default value is @ref LSQUIC_DF_OPTIMISTIC_NAT.
+	 * Default value is LSQUIC_DF_OPTIMISTIC_NAT.
 	 */
 	public int es_optimistic_nat;
 
@@ -543,7 +543,7 @@ public class lsquic_engine_settings extends Structure {
 	 * If set to true, Extensible HTTP Priorities are enabled. This is HTTP/3-only
 	 * setting.
 	 *
-	 * Default value is @ref LSQUIC_DF_EXT_HTTP_PRIO
+	 * Default value is LSQUIC_DF_EXT_HTTP_PRIO
 	 */
 	public int es_ext_http_prio;
 
@@ -557,7 +557,7 @@ public class lsquic_engine_settings extends Structure {
 	 * is destroyed. The purpose of these experiments is to use compression
 	 * performance statistics to figure out a good set of default values.
 	 *
-	 * Default value is @ref LSQUIC_DF_QPACK_EXPERIMENT.
+	 * Default value is LSQUIC_DF_QPACK_EXPERIMENT.
 	 */
 	public int es_qpack_experiment;
 
@@ -598,16 +598,16 @@ public class lsquic_engine_settings extends Structure {
 	 * destroyed in some manner -- either explicitly closed by the user or as a
 	 * result of an engine shutdown.)
 	 *
-	 * Default value is @ref LSQUIC_DF_DELAY_ONCLOSE
+	 * Default value is LSQUIC_DF_DELAY_ONCLOSE
 	 */
 	public int es_delay_onclose;
 
 	/**
 	 * If set to a non-zero value, specified maximum batch size. (The batch of
-	 * packets passed to @ref ea_packets_out() callback). Must be no larger than
+	 * packets passed to ea_packets_out() callback). Must be no larger than
 	 * 1024.
 	 *
-	 * Default value is @ref LSQUIC_DF_MAX_BATCH_SIZE
+	 * Default value is LSQUIC_DF_MAX_BATCH_SIZE
 	 */
 	public int es_max_batch_size;
 
@@ -615,7 +615,7 @@ public class lsquic_engine_settings extends Structure {
 	 * When true, sanity checks are performed on peer's transport parameter values.
 	 * If some limits are set suspiciously low, the connection won't be established.
 	 *
-	 * Default value is @ref LSQUIC_DF_CHECK_TP_SANITY
+	 * Default value is LSQUIC_DF_CHECK_TP_SANITY
 	 */
 	public int es_check_tp_sanity;
 
