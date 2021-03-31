@@ -1,6 +1,6 @@
 package lsquicbindings;
 
-import com.sun.jna.Native;
+import libraries.Libraries;
 
 /**
  * constants used in lsquic library
@@ -10,7 +10,7 @@ public class Constants {
 	/**
 	 * instance of the shared library
 	 */
-	public static final LSQuic lsquic = Native.load("native/libs/liblsquic.so", LSQuic.class);
+	public static final LSQuic lsquic = Libraries.lsquic;
 	
 	/**
 	 * flag for server use (used in engine)

@@ -1,6 +1,6 @@
 package usercodebindings;
 
-import com.sun.jna.Native;
+import libraries.Libraries;
 
 /**
  * Constants used in usercode library
@@ -8,6 +8,6 @@ import com.sun.jna.Native;
 public class Constants {
 
 	// Load native lib for usercode
-	public static final Usercode usercode = Native.load("native/libs/libusercode.so", Usercode.class);
+	public static final Usercode usercode = Libraries.usercode;
 	
 }

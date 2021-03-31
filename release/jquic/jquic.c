@@ -3,12 +3,7 @@
 #include <string.h>
 #include <unistd.h>
 
-#define lib_dir "native/libs/"
-
 int run_jar(char ** args, int argc){
-	char* libraries =  lib_dir "libssl.so " lib_dir "libcrypto.so " lib_dir "libdecrepit.so " lib_dir "liblsquic.so";
-
-	setenv("LD_PRELOAD", libraries, 1);
 
 	char* argv[argc + 3];
 	argv[0] = "java";
@@ -26,9 +21,6 @@ int run_jar(char ** args, int argc){
 }
 
 int run_tests(){
-	char* libraries = lib_dir "libssl.so " lib_dir "libcrypto.so " lib_dir "libdecrepit.so " lib_dir "liblsquic.so";
-
-	setenv("LD_PRELOAD", libraries, 1);
 
 	char* argv[5];
 	argv[0] = "java";

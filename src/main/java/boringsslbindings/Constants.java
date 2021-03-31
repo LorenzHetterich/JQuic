@@ -1,6 +1,6 @@
 package boringsslbindings;
 
-import com.sun.jna.Native;
+import libraries.Libraries;
 
 /**
  * Constants used in openssl library
@@ -42,7 +42,7 @@ public class Constants {
 	 */
 	static {
 		// load shared library
-		openssl = Native.load("native/libs/libssl.so", BoringSsl.class);
+		openssl = Libraries.ssl;
 		// initialize library 
 		openssl.SSL_library_init();
 		// load error strings (even though we don't use them yet ...)
