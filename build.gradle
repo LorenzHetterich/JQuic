@@ -90,6 +90,7 @@ configure(release) {
 
 // make sure to build everything before releasing
 release.dependsOn jar
+release.dependsOn sourcesJar
 jar.dependsOn buildLibrary
 
 // run correct main method of run/jquic

@@ -23,5 +23,6 @@ bin/
 # Ignore JQuic.iml
 JQuic.iml
 
-# run/jquic.jar
+# run/jquic.jar and run/jquic-sources.jar
 /run/jquic.jar
+/run/jquic-sources.jar
