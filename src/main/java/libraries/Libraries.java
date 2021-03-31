@@ -1,5 +1,8 @@
 package libraries;
 
+import java.io.File;
+import java.io.IOException;
+
 import com.sun.jna.Library;
 import com.sun.jna.Native;
 
@@ -30,8 +33,14 @@ public class Libraries {
 		if(!System.getProperty("os.arch").equals("amd64")) {
 			throw new RuntimeException("JProxy only supports x86-64 processors, I'm sorry :(");
 		}
+		File file;
+		try {
+			file = Native.extractFromResourcePath("/linux-x86-64/" + "lib" + name + ".so");
+		} catch (IOException e) {
+			throw new RuntimeException("Could not extract library!", e);
+		}
 		
-		return Native.load("lib" + name + ".so", clazz);
+		return Native.load(file.getAbsolutePath(), clazz);
 	}
 	
 	/**
