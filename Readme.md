@@ -27,7 +27,8 @@ cd run
 ```
 
 ## Usage as Java Library
-After running `./gradlew release`, you can find a stand-alone jar file in `run/jquic.jar` that can be used as Java library. You will also find a source jar in `run/jquic-sources.jar`
+After running `./gradlew release`, you can find a stand-alone jar file in `run/jquic.jar` that can be used as Java library. You will also find a source jar in `run/jquic-sources.jar`. <br>
+Alternatively, you can download a precompiled jar from the [releases](https://github.com/LorenzHetterich/JQuic/releases)
 
 ## Java configuration
 Allows running your Java code without worrying about classpath etc.
