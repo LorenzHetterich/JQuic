@@ -27,7 +27,7 @@ cd run
 ```
 
 ## Java configuration
-Allows running your Java code without worrying about `LD_PRELOAD`
+Allows running your Java code without worrying about classpath etc.
 
 ```bash
 ./jquic -t java -f <path to java file>
@@ -78,7 +78,7 @@ To redirect traffic, iptables and a special user (`proxy_user`) are used.
 To make JQuic more portable and easier to work with, we decided to use gradle and provide some tasks for the most important operations. <br>
 All our custom tasks belong to the group `application` namely:
 * `buildLibrary`: compiles native user code (found in native). The user code is currently used to speed up reading and writing from / to quic streams.
-* `release`: compiles the jquic binary, compiles native user code, builds the jar file and puts everything into the `run` folder. Note that using the proxy only works if your working directory is the `run` folder (we are currently thinking about how to fix that)
+* `release`: compiles the jquic binary, compiles native user code, builds the jar file and source jar file and puts everything into the `run` folder. Note that using the proxy only works if your working directory is the `run` folder (we are currently thinking about how to fix that). The jar file can be used as a normal java library (Linux x86-64 only).
 * `gradleRun`: build native usercode and runs java main class `GradleMain` (`jquic.main`). Note that this is a special main class used only when running from gradle. This class may be used for some quick testing (no pun intended).
 * `runProxy`: runs a terminal as the user proxy_user. This user forwards all UDP traffic to port 443 to 127.0.0.1:4000. Note that this only works if you run `IPTables/create_user.sh` before, to create and set up the proxy_user. Using this gradle task is not recommended, to run a terminal as proxy_user, you can also run the `release` task and then do `./jquic terminal` (in the `run` directory).
 * `runTests`: compiles the jquic binary, compiles native user code, builds the jar file and runs some tests. Tests can also be executed by the jquic using `./jquic tests` (in the `run` directory)
@@ -200,8 +200,10 @@ It can be started listening on port 4001, redirecting to port 443 (whilst resolv
 Another example which replaces some requests can be found in `test/cli/json_http/modify_requests.json`. 
 
 ## Using JQuic as Java Library
-If you require more than just one Java file for your code, you can add your java code to the `src/main/java` source set or add your own in the `gradle.properties` file. <br>
-To run your code, you can use the `gradleRun` gradle task, which will run the main method of `jquic.main.GradleMain`.
+If you require more than just one Java file for your code, you can use JQuic like a normal Java library: <br>
+run the `release` gradle task and you will find the library jar as well as a source jar in the `run` directory. <br>
+Now just add the `jquic.jar` file as a library to your project (and if you want attach `jquic-sources.jar` as source-file). <br>
+It is also planned to release JQuic on maven central at some point in the future!
 
 ### Callback based proxy development
 To develop a callback based proxy, you can extend several different Java classes:
@@ -302,7 +304,7 @@ We are happy for contributions of any kind :)
 
 ### Build
 - [X] Gradle project
-- [X] Java library (note: using as library requires `LD_PRELOAD` of some libraries on execution, for simple proxies using the `java` configuration might be easier)
+- [X] Java library
 
 ### Documentation
 - [X] rogue outline
