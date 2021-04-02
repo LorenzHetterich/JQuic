@@ -23,12 +23,12 @@ public class HttpClient {
 		
 		// send GET / and log response
 		System.out.println("GET /");
-		System.out.println(client.sendRequest(HttpUtils.request("GET", "/", new byte[] {}, "user-agent", "jquic")));
+		System.out.println(client.sendRequest(HttpUtils.request(null, "GET", "/", new byte[] {}, "user-agent", "jquic")));
 		System.out.println();
 		
 		// send GET /1000 and log response
 		System.out.println("GET /1000");
-		System.out.println(client.sendRequest(HttpUtils.request("GET", "/1000", new byte[] {}, "user-agent", "jquic")));
+		System.out.println(client.sendRequest(HttpUtils.request(null, "GET", "/1000", new byte[] {}, "user-agent", "jquic")));
 		System.out.println();
 		
 		// close client

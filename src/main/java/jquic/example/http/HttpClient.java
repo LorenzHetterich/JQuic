@@ -127,6 +127,7 @@ public class HttpClient {
 			response = SimpleHttpMessage.parse(stream);
 		} catch(Exception e) {
 			// error reading response
+			System.err.println("[HttpClient]: Error whilst reading response: " + e.getMessage());
 			response = null;
 		}
 

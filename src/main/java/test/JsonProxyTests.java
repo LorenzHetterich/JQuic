@@ -58,7 +58,7 @@ public class JsonProxyTests {
 		client.connect("localhost", "localhost", 4001);
 
 		logger.info("Testing 404");
-		SimpleHttpMessage notFound = client.sendRequest(request("GET", "/blah", "", "user-agent", "test-quic"),
+		SimpleHttpMessage notFound = client.sendRequest(request(null, "GET", "/blah", "", "user-agent", "test-quic"),
 				REQ_TIMEOUT);
 		assertHttp(response(404, "not found", "content-type", "text-plain"), notFound, false);
 		logger.info("OK");
@@ -67,7 +67,7 @@ public class JsonProxyTests {
 		client.start();
 		client.connect("localhost", "localhost", 4001);
 		logger.info("Testing repeat");
-		SimpleHttpMessage request = request("POST", "/repeat?count=5", "", "user-agent", "test-quic");
+		SimpleHttpMessage request = request(null, "POST", "/repeat?count=5", "", "user-agent", "test-quic");
 		SimpleHttpMessage repeat = client.sendRequest(request, REQ_TIMEOUT);
 		assertHttp(response(200, "AAAAA", "content-type", "text-plain"), repeat, false);
 		logger.info("OK");
@@ -76,7 +76,7 @@ public class JsonProxyTests {
 		client.start();
 		client.connect("localhost", "localhost", 4001);
 		logger.info("Testing coffee");
-		SimpleHttpMessage coffee = client.sendRequest(request("GET", "/coffee", "", "user-agent", "test-quic"),
+		SimpleHttpMessage coffee = client.sendRequest(request(null, "GET", "/coffee", "", "user-agent", "test-quic"),
 				REQ_TIMEOUT);
 		assertHttp(response(418, "V" + "|" + "." + "U", "X-Tea-Type", "Yorkshire Tea", "content-type", "tea"), coffee,
 				false);
@@ -87,7 +87,7 @@ public class JsonProxyTests {
 		client.connect("localhost", "localhost", 4001);
 		logger.info("Testing admin (1/2)");
 		SimpleHttpMessage unauthorized = client.sendRequest(
-				request("GET", "/admin", "", "X-Password", "Password", "user-agent", "test-quic"), REQ_TIMEOUT);
+				request(null, "GET", "/admin", "", "X-Password", "Password", "user-agent", "test-quic"), REQ_TIMEOUT);
 		assertEquals("wrong status code", 401, unauthorized.getResponseLine().status_code);
 		logger.info("OK");
 		client.close();
@@ -96,7 +96,7 @@ public class JsonProxyTests {
 		client.connect("localhost", "localhost", 4001);
 		logger.info("Testing admin (2/2)");
 		SimpleHttpMessage authorized = client.sendRequest(
-				request("GET", "/admin", "", "X-Password", "super secret!", "user-agent", "test-quic"), REQ_TIMEOUT);
+				request(null, "GET", "/admin", "", "X-Password", "super secret!", "user-agent", "test-quic"), REQ_TIMEOUT);
 		assertEquals("wrong status code", 200, authorized.getResponseLine().status_code);
 		logger.info("OK");
 
@@ -134,7 +134,7 @@ public class JsonProxyTests {
 		client.connect("localhost", "localhost", 4001);
 
 		logger.info("Testing repeat");
-		SimpleHttpMessage request = request("POST", "/repeat?count=5", "", "user-agent", "test-quic");
+		SimpleHttpMessage request = request(null, "POST", "/repeat?count=5", "", "user-agent", "test-quic");
 		SimpleHttpMessage repeat = client.sendRequest(request, REQ_TIMEOUT);
 		assertHttp(response(200, "A".repeat(55), "content-type", "text-plain"), repeat, false);
 		logger.info("OK");
@@ -143,7 +143,7 @@ public class JsonProxyTests {
 		client.start();
 		client.connect("localhost", "localhost", 4001);
 		logger.info("Testing tea");
-		SimpleHttpMessage coffee = client.sendRequest(request("GET", "/tea", "", "user-agent", "test-quic"),
+		SimpleHttpMessage coffee = client.sendRequest(request(null, "GET", "/tea", "", "user-agent", "test-quic"),
 				REQ_TIMEOUT);
 		assertHttp(response(418, "V" + "|" + "." + "U", "X-Tea-Type", "Yorkshire Tea", "content-type", "tea"), coffee,
 				false);
@@ -154,7 +154,7 @@ public class JsonProxyTests {
 		client.connect("localhost", "localhost", 4001);
 		logger.info("Testing admin");
 		SimpleHttpMessage unauthorized = client.sendRequest(
-				request("GET", "/admin", "", "X-Password", "super secret!", "user-agent", "test-quic"), REQ_TIMEOUT);
+				request(null, "GET", "/admin", "", "X-Password", "super secret!", "user-agent", "test-quic"), REQ_TIMEOUT);
 		assertEquals("wrong status code", 401, unauthorized.getResponseLine().status_code);
 		logger.info("OK");
 		// dispose of resources (stop threads etc.)

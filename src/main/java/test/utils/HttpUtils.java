@@ -41,14 +41,18 @@ public class HttpUtils {
 
 	/**
 	 * Case request
+	 * @param authority same as sni (not really though)
 	 * @param method provided
 	 * @param path used
 	 * @param data provided
 	 * @param headers used
 	 * @return HTTP msg
 	 */
-	public static SimpleHttpMessage request(String method, String path, byte[] data, String... headers) {
+	public static SimpleHttpMessage request(String authority, String method, String path, byte[] data, String... headers) {
 		HttpHeaders h = new HttpHeaders();
+		if(authority != null) {
+			h.put(":authority", authority);
+		}
 		h.put(":method", method);
 		h.put(":path",  path);
 		h.put(":scheme", "https");
@@ -74,8 +78,21 @@ public class HttpUtils {
 	 * @param headers used
 	 * @return HTTP msg
 	 */
-	public static SimpleHttpMessage request(String method, String path, String data, String... headers) {
-		return request(method, path, data == null ? new byte[] {} : data.getBytes(), headers);
+	public static SimpleHttpMessage request(String method, String path, byte[] data, String... headers) {
+		return request(null, method, path, data, headers);
+	}
+	
+	/**
+	 * Case request
+	 * @param authority same as sni (not really though)
+	 * @param method provided
+	 * @param path used
+	 * @param data provided
+	 * @param headers used
+	 * @return HTTP msg
+	 */
+	public static SimpleHttpMessage request(String authority, String method, String path, String data, String... headers) {
+		return request(authority, method, path, data == null ? new byte[] {} : data.getBytes(), headers);
 	}
 	
 }
