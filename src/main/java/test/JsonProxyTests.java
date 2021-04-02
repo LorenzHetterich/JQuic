@@ -25,6 +25,8 @@ import test.resources.Resources;
  */
 public class JsonProxyTests {
 
+	public static final int REQ_TIMEOUT = System.getProperty("os.name").startsWith("Windows") ? 20000 : 1000;
+
 	public static String doNothing = Resources.loadString("doNothing.json");
 	public static String modifyRequests = Resources.loadString("modifyRequests.json");
 
@@ -56,31 +58,45 @@ public class JsonProxyTests {
 		client.connect("localhost", "localhost", 4001);
 
 		logger.info("Testing 404");
-		SimpleHttpMessage notFound = client.sendRequest(request("GET", "/blah", "", "user-agent", "test-quic"), 1000);
+		SimpleHttpMessage notFound = client.sendRequest(request("GET", "/blah", "", "user-agent", "test-quic"),
+				REQ_TIMEOUT);
 		assertHttp(response(404, "not found", "content-type", "text-plain"), notFound, false);
 		logger.info("OK");
-
+		client.close();
+		client = new HttpClient();
+		client.start();
+		client.connect("localhost", "localhost", 4001);
 		logger.info("Testing repeat");
 		SimpleHttpMessage request = request("POST", "/repeat?count=5", "", "user-agent", "test-quic");
-		SimpleHttpMessage repeat = client.sendRequest(request, 1000);
+		SimpleHttpMessage repeat = client.sendRequest(request, REQ_TIMEOUT);
 		assertHttp(response(200, "AAAAA", "content-type", "text-plain"), repeat, false);
 		logger.info("OK");
-
+		client.close();
+		client = new HttpClient();
+		client.start();
+		client.connect("localhost", "localhost", 4001);
 		logger.info("Testing coffee");
-		SimpleHttpMessage coffee = client.sendRequest(request("GET", "/coffee", "", "user-agent", "test-quic"), 1000);
+		SimpleHttpMessage coffee = client.sendRequest(request("GET", "/coffee", "", "user-agent", "test-quic"),
+				REQ_TIMEOUT);
 		assertHttp(response(418, "V" + "|" + "." + "U", "X-Tea-Type", "Yorkshire Tea", "content-type", "tea"), coffee,
 				false);
 		logger.info("OK");
-
+		client.close();
+		client = new HttpClient();
+		client.start();
+		client.connect("localhost", "localhost", 4001);
 		logger.info("Testing admin (1/2)");
-		SimpleHttpMessage unauthorized = client
-				.sendRequest(request("GET", "/admin", "", "X-Password", "Password", "user-agent", "test-quic"), 1000);
+		SimpleHttpMessage unauthorized = client.sendRequest(
+				request("GET", "/admin", "", "X-Password", "Password", "user-agent", "test-quic"), REQ_TIMEOUT);
 		assertEquals("wrong status code", 401, unauthorized.getResponseLine().status_code);
 		logger.info("OK");
-
+		client.close();
+		client = new HttpClient();
+		client.start();
+		client.connect("localhost", "localhost", 4001);
 		logger.info("Testing admin (2/2)");
 		SimpleHttpMessage authorized = client.sendRequest(
-				request("GET", "/admin", "", "X-Password", "super secret!", "user-agent", "test-quic"), 1000);
+				request("GET", "/admin", "", "X-Password", "super secret!", "user-agent", "test-quic"), REQ_TIMEOUT);
 		assertEquals("wrong status code", 200, authorized.getResponseLine().status_code);
 		logger.info("OK");
 
@@ -119,22 +135,28 @@ public class JsonProxyTests {
 
 		logger.info("Testing repeat");
 		SimpleHttpMessage request = request("POST", "/repeat?count=5", "", "user-agent", "test-quic");
-		SimpleHttpMessage repeat = client.sendRequest(request, 1000);
+		SimpleHttpMessage repeat = client.sendRequest(request, REQ_TIMEOUT);
 		assertHttp(response(200, "A".repeat(55), "content-type", "text-plain"), repeat, false);
 		logger.info("OK");
-
+		client.close();
+		client = new HttpClient();
+		client.start();
+		client.connect("localhost", "localhost", 4001);
 		logger.info("Testing tea");
-		SimpleHttpMessage coffee = client.sendRequest(request("GET", "/tea", "", "user-agent", "test-quic"), 1000);
+		SimpleHttpMessage coffee = client.sendRequest(request("GET", "/tea", "", "user-agent", "test-quic"),
+				REQ_TIMEOUT);
 		assertHttp(response(418, "V" + "|" + "." + "U", "X-Tea-Type", "Yorkshire Tea", "content-type", "tea"), coffee,
 				false);
 		logger.info("OK");
-
+		client.close();
+		client = new HttpClient();
+		client.start();
+		client.connect("localhost", "localhost", 4001);
 		logger.info("Testing admin");
 		SimpleHttpMessage unauthorized = client.sendRequest(
-				request("GET", "/admin", "", "X-Password", "super secret!", "user-agent", "test-quic"), 1000);
+				request("GET", "/admin", "", "X-Password", "super secret!", "user-agent", "test-quic"), REQ_TIMEOUT);
 		assertEquals("wrong status code", 401, unauthorized.getResponseLine().status_code);
 		logger.info("OK");
-
 		// dispose of resources (stop threads etc.)
 		client.close();
 		server.stop();

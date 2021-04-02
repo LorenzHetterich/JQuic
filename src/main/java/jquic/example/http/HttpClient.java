@@ -111,15 +111,14 @@ public class HttpClient {
 			request = send_queue.pop();
 		}
 		// send headers
-		engine.stream_send_headers(stream.getNative(), request.headers.toNative().getPointer(), 0);
+		stream.sendHeaders(request.headers);
 		
 		// check if request contains data and write to stream
 		if(request.hasData()) {
 			stream.out.write(request.data);
 		}
-		
 		engine.stream_shutdown(stream.getNative(), 1);
-
+		
 		// Response to request
 		SimpleHttpMessage response;
 
@@ -142,6 +141,7 @@ public class HttpClient {
 		} finally {
 			helper.lock.unlock();
 		}
+		engine.close_stream(stream.getNative());
 	}
 
 	/**

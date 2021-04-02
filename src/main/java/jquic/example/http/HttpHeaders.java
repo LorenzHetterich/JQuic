@@ -148,7 +148,7 @@ public class HttpHeaders {
 	    else
 	        return -1;
 	}
-
+	
 	/**
 	 * Transfer headers to native lsquic lib
 	 */
@@ -175,11 +175,12 @@ public class HttpHeaders {
 			index ++;
 		} 
 		
+		// TODO: hbug might get Garbage Collected :O
+		
 		headers.headers = ref;
 		ref.write();
 		hbuf.write();
 		headers.write();
-		
 		return headers;
 	}
 	

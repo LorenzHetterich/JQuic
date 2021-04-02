@@ -42,13 +42,19 @@ def mainClassName = "jquic.main.GradleMain"
 // current directory
 def curDir = file(".")
 
+def WIN = System.getProperty("os.name").contains("Window")
+
 // run 'native/shared.sh' (from directory 'native')
 // depends on 'buildHeaders'
 task buildLibrary(type: Exec){
-    executable "sh"
-    args "-c", "cd native;sh shared.sh"
+    if(WIN){
+    	executable "cmd"
+    	args "/c", "cd ${curDir}/native && .\\shared_windows"
+    } else {
+    	executable "sh"
+    	args "-c", "cd native;sh shared.sh"
+    }
 }
-
 
 // put the buildLibrary task into the 'application' group and add description
 configure(buildLibrary) {   
@@ -110,8 +116,13 @@ gradleRun.dependsOn release
 
 // run tests
 task runTests(type: Exec){
-	executable "sh"
-	args "-c", "cd run; ./${binaryName} tests"
+	if(WIN){
+    	executable "cmd"
+    	args "/c", "cd ${curDir}/run && .\\${binaryName}.exe tests"
+    } else {
+    	executable "sh"
+		args "-c", "cd run; ./${binaryName} tests"
+    }
 }
 
 // put runTests task into the 'application' group and add description

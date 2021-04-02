@@ -59,7 +59,7 @@ public class RequestReader {
 	public byte read() {
 		if(buf_offset >= buf_size) {
 			if(!buffer()) {
-				throw new RuntimeException("unexpected End of input");
+				throw new RuntimeException("unexpected End of input @ " + buf_offset);
 			}
 		}
 		

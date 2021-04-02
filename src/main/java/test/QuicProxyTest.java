@@ -42,6 +42,8 @@ public class QuicProxyTest {
 			
 			@Override
 			public void write(int b) throws IOException {
+				if(b == '\r')
+					return;
 				str.append((char)b);
 			}
 			
