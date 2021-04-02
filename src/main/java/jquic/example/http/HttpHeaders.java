@@ -106,14 +106,16 @@ public class HttpHeaders {
 	}
 
 	/**
-	 * Config for headers
+	 * Config for headers <br>
 	 * @param hdr header
 	 * @param header_buf buffer
 	 * @param name_offset offeset for name
 	 * @param name_len length of name
 	 * @param val_offset value offset
 	 * @param val_len size of value
+	 * @deprecated use {@link usercodebindings.Usercode#send_headers(com.sun.jna.Pointer, com.sun.jna.StringArray, int)} instead!
 	 */
+	@Deprecated
 	private void lsxpack_header_set_offset2(lsxpack_header hdr, header_buf.ByReference header_buf, int name_offset, int name_len, int val_offset, int val_len) {
 		hdr.buf = header_buf.getPointer().share(4 + header_buf.offset);
 		hdr.name_offset = (short) name_offset;
@@ -129,7 +131,9 @@ public class HttpHeaders {
 	 * @param name of header
 	 * @param value given
 	 * @return sucess/fail
+	 * @deprecated use {@link usercodebindings.Usercode#send_headers(com.sun.jna.Pointer, com.sun.jna.StringArray, int)} instead!
 	 */
+	@Deprecated
 	private int header_set_ptr(lsxpack_header hdr, header_buf.ByReference header_buf, String name, String value) {
 		int name_len = name.length();
 		int val_len = value.length();
@@ -151,7 +155,9 @@ public class HttpHeaders {
 	
 	/**
 	 * Transfer headers to native lsquic lib
+	 * @deprecated use {@link usercodebindings.Usercode#send_headers(com.sun.jna.Pointer, com.sun.jna.StringArray, int)} instead!
 	 */
+	@Deprecated
 	public lsquic_http_headers.ByReference toNative(){
 		
 		lsquic_http_headers.ByReference headers = new lsquic_http_headers.ByReference();
