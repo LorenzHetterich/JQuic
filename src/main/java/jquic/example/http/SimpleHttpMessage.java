@@ -143,11 +143,11 @@ public class SimpleHttpMessage {
 		} else if (headers.contains("content-length")) { // content-length is ignored if 'Transfer-Encoding: chunked' is present
 			data = s.read(Integer.valueOf(headers.get("content-length").strip()));
 		} else {
-			
 			// no data
 		}
 
-		return new SimpleHttpMessage(firstLine, headers, data);
+		SimpleHttpMessage msg = new SimpleHttpMessage(firstLine, headers, data);
+		return msg;
 	}
 
 	/**

@@ -1,8 +1,14 @@
 package jquic.base.stream;
 
+import java.util.Iterator;
+import java.util.Map.Entry;
+
 import com.sun.jna.Pointer;
+import com.sun.jna.StringArray;
 
 import jquic.base.connection.QuicConnection;
+import jquic.example.http.HttpHeaders;
+import libraries.Libraries;
 
 /**
  * Wrapper class for native lsquic_stream_t
@@ -62,9 +68,28 @@ public class QuicStream {
 	}
 	
 	/**
+	 * Convenience method for {@link jquic.base.engine.QuicEngine#stream_send_headers(Pointer, Pointer, int)}
+	 */
+	public void sendHeaders(HttpHeaders headers) {
+		String[] vals = new String[headers.values.size() * 2];
+		Iterator<Entry<String,String>> it = headers.values.iterator();
+		for(int i = 0; i < vals.length / 2; i++) {
+			Entry<String, String> header = it.next();
+			vals[2*i] = header.getKey();
+			vals[2*i+1] = header.getValue();
+		}
+		
+		synchronized(connection.engine) {
+			Libraries.usercode.send_headers(stream, new StringArray(vals), vals.length/2);
+		}
+	}
+	
+	/**
 	 * Convenience method for {@link jquic.base.engine.QuicEngine#close_stream(Pointer)}
 	 */
 	public void close() {
+		if(closed)
+			return;
 		connection.engine.close_stream(getNative());
 	}
 	

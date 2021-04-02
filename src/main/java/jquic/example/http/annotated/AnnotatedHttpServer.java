@@ -13,7 +13,6 @@ import jquic.base.engine.QuicEngine;
 import jquic.base.stream.QuicStream;
 import jquic.example.http.HttpHeaders;
 import jquic.example.http.SimpleHttpMessage;
-import lsquicbindings.struct.lsquic_http_headers;
 
 /**
  * Http server that calls methods to handle requests based on annotations
@@ -111,9 +110,7 @@ public class AnnotatedHttpServer {
 	 */
 	public void sendResponse(QuicStream stream, SimpleHttpMessage response) {
 		
-		lsquic_http_headers.ByReference hdrs = response.headers.toNative();
-
-		engine.stream_send_headers(stream.getNative(), hdrs.getPointer(), 0);
+		stream.sendHeaders(response.headers);
 		if(response.hasData()) {
 			stream.out.write(response.data);
 		}

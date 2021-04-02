@@ -154,7 +154,7 @@ public class QuicConnection {
 	}
 	
 	/**
-	 * mplementation of {@link lsquicbindings.struct.lsquic_stream_if#on_close lsquic_stream_if#on_close}
+	 * implementation of {@link lsquicbindings.struct.lsquic_stream_if#on_close lsquic_stream_if#on_close}
 	 * @param stream native lsquic_stream_t
 	 * @param context user supplied context (stream id)
 	 */
@@ -166,7 +166,6 @@ public class QuicConnection {
 	 * called when the connection is closed
 	 */
 	public void onClosed() {
-		
 	}
 
 	/**

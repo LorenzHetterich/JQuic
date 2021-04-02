@@ -2,6 +2,7 @@ package usercodebindings;
 
 import com.sun.jna.Library;
 import com.sun.jna.Pointer;
+import com.sun.jna.StringArray;
 
 /**
  * Wrapper class for user-written native code
@@ -54,4 +55,10 @@ public interface Usercode extends Library {
 	 * create stream context
 	 */
 	Pointer create_stream_ctx(long id);
+	
+	/**
+	 * create struct lsxpack_header
+	 */
+	int send_headers(Pointer stream, StringArray headers, int amount);
+	
 }

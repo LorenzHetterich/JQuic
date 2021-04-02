@@ -44,6 +44,7 @@ public class TestExecutor {
 						System.out.println();
 						System.out.println("FAILED");
 						System.err.println(e.getCause().getClass().getName() + ": " + e.getCause().getMessage());
+						e.getCause().printStackTrace();
 						System.out.println();
 					} catch(Throwable e) {
 						failed ++;

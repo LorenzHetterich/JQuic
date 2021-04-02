@@ -43,6 +43,9 @@ public class Assertions {
 
 	public static void assertHttp(SimpleHttpMessage expected, SimpleHttpMessage got, boolean request) {
 
+		if (expected != null && got == null || expected == null && got != null)
+			throw new AssertionError("One HttpMessage was null, the other one not");
+		
 		// reparse first line just to be sure
 		if(request) {
 			expected.firstLine = new RequestLine(expected.firstLine).toString();
@@ -52,8 +55,6 @@ public class Assertions {
 			got.firstLine = ResponseLine.parse(got.firstLine).toString();
 		}
 		
-		if (expected != null && got == null || expected == null && got != null)
-			throw new AssertionError("One HttpMessage was null, the other one not");
 
 		assertEquals("First line does not match!", expected.firstLine, got.firstLine);
 

@@ -1,3 +1,5 @@
+
+#include "stream_structs.h"
 #include <stdio.h>
 #include <stdint.h>
 #include <string.h>

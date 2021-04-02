@@ -11,7 +11,6 @@ import jquic.base.PacketHandler;
 import jquic.base.connection.QuicConnection;
 import jquic.base.engine.QuicEngine;
 import jquic.base.stream.QuicStream;
-import lsquicbindings.struct.lsquic_http_headers;
 
 /**
  * Simple http server. <br>
@@ -90,10 +89,8 @@ public class HttpServer {
 	 * @param response to be send
 	 */
 	public void sendResponse(QuicStream stream, SimpleHttpMessage response) {
-		// Convert header to native for usage in LSQUIC
-		lsquic_http_headers.ByReference hdrs = response.headers.toNative();
 		// Send headers
-		engine.stream_send_headers(stream.getNative(), hdrs.getPointer(), 0);
+		stream.sendHeaders(response.headers);
 		// Check if response is not empty and write to stream
 		if(response.hasData()) {
 			stream.out.write(response.data);
