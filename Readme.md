@@ -13,7 +13,7 @@ A Tool that allows to quickly create both, http agnostic and generic quic client
 
 ## What JQuic is not
 Optimized for speed: This tool is not intended to be used for http servers in production environments but rather for proxies / servers in a test environment. Thus, whilst the underlying library (`lsquic`) is fast, this implementation is not. <br>
-Cross Platform: Although JQuic is mostly developed in Java and `lsquic` supports multiple platforms, cross platform support was a non goal, so JQuic only works on linux as of now (although multi-platform support might be added in the future. Feel free to open Pull requests ;D)
+Cross Platform: Although JQuic works for Windows and Linux (both x86-64 only), only Linux is really supported (Usage with Windows is slow and might be buggy. However, feel free to open pull requests and issues!).
 
 ## Installation
 * requires Java 14
@@ -82,7 +82,7 @@ To redirect traffic, iptables and a special user (`proxy_user`) are used.
 To make JQuic more portable and easier to work with, we decided to use gradle and provide some tasks for the most important operations. <br>
 All our custom tasks belong to the group `application` namely:
 * `buildLibrary`: compiles native user code (found in native). The user code is currently used to speed up reading and writing from / to quic streams.
-* `release`: compiles the jquic binary, compiles native user code, builds the jar file and source jar file and puts everything into the `run` folder. Note that using the proxy only works if your working directory is the `run` folder (we are currently thinking about how to fix that). The jar file can be used as a normal java library (Linux x86-64 only).
+* `release`: compiles the jquic binary, compiles native user code, builds the jar file and source jar file and puts everything into the `run` folder. Note that using the proxy only works if your working directory is the `run` folder (we are currently thinking about how to fix that). The jar file can be used as a normal java library (Linux + Windows, x86-64 only).
 * `gradleRun`: build native usercode and runs java main class `GradleMain` (`jquic.main`). Note that this is a special main class used only when running from gradle. This class may be used for some quick testing (no pun intended).
 * `runProxy`: runs a terminal as the user proxy_user. This user forwards all UDP traffic to port 443 to 127.0.0.1:4000. Note that this only works if you run `IPTables/create_user.sh` before, to create and set up the proxy_user. Using this gradle task is not recommended, to run a terminal as proxy_user, you can also run the `release` task and then do `./jquic terminal` (in the `run` directory).
 * `runTests`: compiles the jquic binary, compiles native user code, builds the jar file and runs some tests. Tests can also be executed by the jquic using `./jquic tests` (in the `run` directory)
