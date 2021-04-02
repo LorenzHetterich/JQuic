@@ -9,6 +9,7 @@ import com.sun.jna.Library;
 import com.sun.jna.Native;
 
 import boringsslbindings.BoringSsl;
+import lsquicbindings.Constants;
 import lsquicbindings.LSQuic;
 import usercodebindings.Usercode;
 
@@ -68,6 +69,10 @@ public class Libraries {
 	 * lsquic library. QUIC + HTTP/3
 	 */
 	public static final LSQuic lsquic = loadLibrary("lsquic", LSQuic.class);
+	
+	static {
+		lsquic.lsquic_global_init(Constants.LSQUIC_GLOBAL_CLIENT | Constants.LSQUIC_GLOBAL_SERVER);
+	}
 
 	/**
 	 * usercode library. Uses native code for some performance gain
