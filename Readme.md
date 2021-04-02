@@ -273,7 +273,7 @@ curl: `curl --http3 https://localhost:4000/` (feel free to make more fancy reque
 * `lsquic echo_client`: No issues detected so far (`test/lsquic/EchoServer.java`)
 
 ## Libraries used:
-* [lsquic](https://github.com/litespeedtech/lsquic) `2.29.5`: QUIC and HTTP/3 implementation in C
+* [lsquic](https://github.com/litespeedtech/lsquic) `2.29.6`: QUIC and HTTP/3 implementation in C
 * [boringssl](https://boringssl.googlesource.com/boringssl) `a2278d4d2cabe73f6663e3299ea7808edfa306b9`: SSL library required by lsquic
 * [JNA](https://github.com/java-native-access/jna) `5.6.0`: Java library for easy access to native libraries
 * [gson](https://github.com/google/gson) `2.8.6`: JSON Java library
